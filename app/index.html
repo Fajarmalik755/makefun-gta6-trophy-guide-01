@@ -1,36 +1,26 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vice City Platinum Playbook — GTA 6 Trophy Guide &amp; Tracker</title>
+<title>Sunset Strip Trophy Guide — GTA VI 55-trophy tracker</title>
+<meta name="description" content="Offline guide and tracker for all 55 Grand Theft Auto VI PlayStation 5 trophies: cited guides, platinum roadmap, missable flags, spoiler shield, export and import.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="masthead">
-  <div class="masthead-inner">
-    <p class="kicker">Grand Theft Auto VI &middot; PlayStation 5 &middot; 55 trophies</p>
-    <h1>Vice City Platinum Playbook</h1>
-    <p class="subtitle">Every official trophy, its guide in our own words with sources, a roadmap to the platinum, and a tracker that saves your progress offline. Tap any trophy to read its full guide.</p>
-    <div class="progress-wrap" aria-label="Overall progress">
-      <div class="progress-line"><span id="earnedLine">0 / 55 earned</span><span id="percentLine">0%</span></div>
-      <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
-      <div class="grade-counts" id="gradeCounts"></div>
-    </div>
-    <div class="toolbar">
-      <label class="search-box">Search <input id="searchInput" type="search" placeholder="Trophy name, mission, place&hellip;" autocomplete="off"></label>
-      <label class="spoiler-toggle"><input id="spoilerToggle" type="checkbox"> Spoiler shield: hide hidden &amp; story names until earned</label>
-      <div class="file-buttons">
-        <button id="exportBtn" type="button">Export progress</button>
-        <button id="importBtn" type="button">Import progress</button>
-        <input id="importFile" type="file" accept="application/json,.json" hidden>
-        <button id="resetBtn" type="button" class="danger" title="Clear all earned trophies and counters">Reset</button>
-      </div>
-    </div>
+<header id="top">
+  <div class="brand">
+    <h1>Sunset Strip Trophy Guide</h1>
+    <p class="tagline">Grand Theft Auto VI &middot; PlayStation 5 &middot; all 55 trophies, cited guides, offline tracker</p>
+  </div>
+  <div class="progress" id="progressBox" aria-live="polite">
+    <div class="progress-line"><span id="progressText">0 / 55 earned</span><span id="progressPct">0%</span></div>
+    <div class="bar"><div class="fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-grades" id="progressGrades"></div>
   </div>
 </header>
 
-<nav class="tabs" aria-label="Sections">
+<nav id="tabs" aria-label="Guide sections">
   <button class="tab active" data-tab="tracker" type="button">Tracker</button>
   <button class="tab" data-tab="roadmap" type="button">Roadmap</button>
   <button class="tab" data-tab="missables" type="button">Missables</button>
@@ -38,51 +28,81 @@
 </nav>
 
 <main>
-  <section id="tab-tracker" class="panel active">
-    <div class="chips" id="chips" role="group" aria-label="Filters"></div>
-    <p class="hint" id="resultCount"></p>
-    <div class="tracker-layout">
-      <ul class="trophy-list" id="trophyList"></ul>
-      <aside class="detail" id="detailPane" aria-live="polite">
-        <p class="detail-empty">Pick a trophy on the left to read its full guide, counts and source.</p>
-      </aside>
+  <section id="tab-tracker" class="panel active" aria-label="Trophy tracker">
+    <div class="controls" id="controls">
+      <input id="search" type="search" placeholder="Search a trophy, mission or keyword…" aria-label="Search trophies">
+      <select id="kindFilter" aria-label="Filter by kind">
+        <option value="">All kinds</option>
+        <option value="platinum">Platinum</option>
+        <option value="story">Story</option>
+        <option value="missable">Missable</option>
+        <option value="side">Strangers &amp; side missions</option>
+        <option value="collectibles">Collectibles</option>
+        <option value="activities">Activities</option>
+        <option value="misc">Challenges &amp; open world</option>
+      </select>
+      <select id="gradeFilter" aria-label="Filter by grade">
+        <option value="">All grades</option>
+        <option value="platinum">Platinum</option>
+        <option value="gold">Gold</option>
+        <option value="silver">Silver</option>
+        <option value="bronze">Bronze</option>
+      </select>
+      <label class="check"><input id="hideEarned" type="checkbox"> Hide earned</label>
+      <label class="check spoiler-check"><input id="spoilerToggle" type="checkbox" checked> Spoiler shield: hide the 28 hidden trophies</label>
+      <button id="exportBtn" type="button">Export progress</button>
+      <button id="importBtn" type="button">Import progress</button>
+      <input id="importFile" type="file" accept="application/json,.json" hidden>
+    </div>
+    <p class="hint" id="listHint">Tap a trophy to open its guide. Hidden trophies stay veiled until you reveal them or earn them.</p>
+    <div class="split">
+      <ul id="trophyList" class="trophy-list" aria-label="Trophy list"></ul>
+      <article id="detail" class="detail" aria-label="Trophy guide" aria-live="polite">
+        <p class="detail-empty">Pick a trophy on the left to read its guide, sources and counts.</p>
+      </article>
     </div>
   </section>
 
-  <section id="tab-roadmap" class="panel">
+  <section id="tab-roadmap" class="panel" aria-label="Roadmap to the platinum">
     <h2>Roadmap to the platinum</h2>
-    <p class="lede">Difficulty 4/10 &middot; about 200 hours &middot; 1 playthrough &middot; 0 online trophies. Cheats disable trophies and saving. There is no mission replay and no New Game Plus, and only 15 manual save slots — save by hand at the start and end of every chapter.</p>
-    <ol class="roadmap" id="roadmapList"></ol>
-    <h3>100% completion checklist</h3>
-    <ul class="checklist">
-      <li>100 optional missions (200–300+ exist)</li>
-      <li>Scan 200 of 277 base vehicles &middot; study 100 of 255 animals with binoculars</li>
-      <li>70 of 80 challenges &middot; 300 stunts &middot; 15 of 18 meditations &middot; 15 of 18 card sets</li>
-      <li>All robberies, underwater discoveries, shooting ranges, drone races and Bret quests</li>
-      <li>39 gang operations &middot; 22 bank jobs &middot; 7 Payday Loan jobs &middot; 8 bank vaults</li>
-      <li>100 WAiNK locations &middot; 33 underwater discoveries &middot; 100 Cocaine Flamingos</li>
-    </ul>
+    <p class="lede">One playthrough, no online trophies, about 200 hours at a relaxed pace. Save by hand at the start and end of every chapter — there is no mission replay and no new game plus, so a manual save is your only rewind.</p>
+    <ol class="stages" id="roadmapStages"></ol>
+    <h3>100% completion — what it counts</h3>
+    <p>The gold trophy <strong>A Long Road</strong> needs the in-game 100% checklist (Progress &gt; Stats &gt; 100% Completion), which unlocks after the story. Progress made during the story already counts. The checklist asks for roughly 100 optional missions, 200 of 277 base vehicles scanned, 100 of 255 animals studied, 70 of 80 challenges, 300 stunts, 15 of 18 meditations, 15 of 18 card sets, all robberies, all 39 gang operations, all 8 bank vaults, 100 WAiNK locations, 33 underwater discoveries and 100 Cocaine Flamingos.</p>
+    <p class="cite">Roadmap and counts: PowerPyx trophy guide &amp; roadmap; KeenGamer platinum roadmap.</p>
   </section>
 
-  <section id="tab-missables" class="panel">
+  <section id="tab-missables" class="panel" aria-label="Missable trophies">
     <h2>Missable trophies</h2>
-    <p class="lede">Only one trophy in the whole list can be missed. Everything else can be finished in free roam after the story.</p>
+    <p class="lede">Only one trophy can truly be missed. Every story trophy pops automatically as you play, and every side and open-world trophy stays available in free roam after the story ends.</p>
     <div id="missableList"></div>
-    <h3>Why nothing else is missable</h3>
-    <p>Every story trophy pops automatically from its mission or chapter, every stranger strand stays open after the story, and every collectible, activity and robbery trophy can be done in free roam. The only hard cutoff is the Chapter 1 balcony meditation — miss Lucia's invite and that spot is gone.</p>
+    <h3>Save habits that protect a run</h3>
+    <ul>
+      <li>Keep a manual save at the start of each chapter (15 manual slots exist) — never overwrite your only save.</li>
+      <li>Cheats disable trophies and saving while active, so keep cheats off on a platinum run.</li>
+      <li>Do the Chapter 1 balcony meditation the moment it is offered (see Positive Mental Attitude below) — it is the one window that closes.</li>
+    </ul>
+    <p class="cite">Missable verdict and save advice: PowerPyx trophy guide &amp; roadmap.</p>
   </section>
 
-  <section id="tab-sources" class="panel">
+  <section id="tab-sources" class="panel" aria-label="Sources">
     <h2>Sources</h2>
-    <p class="lede">Each trophy's guide names its source beside it. The official names, descriptions and grades come from the official PlayStation list as published on Exophase and PSNProfiles. Guides are written in our own words from the facts in these sources — never copied.</p>
+    <p class="lede">Every guide names where its facts come from, beside the trophy it belongs to. These are the guides and lists this entry draws on — cited, never copied. Where sources disagree, the trophy's guide shows both sides. The list below also shows how many trophy guides cite each source.</p>
     <ul class="source-list" id="sourceList"></ul>
+    <h3>How to read a guide here</h3>
+    <ul>
+      <li><strong>Guide</strong> — what to do, in this entry's own words.</li>
+      <li><strong>Sources</strong> — the named guides behind each fact; follow a link to check it yourself.</li>
+      <li><strong>Disagreement</strong> — when two sources say different things, both are shown and the guide says which one it follows and why.</li>
+      <li><strong>Unconfirmed</strong> — a few trophies had no verified method when the guides were written; those guides say so plainly instead of guessing.</li>
+    </ul>
   </section>
 </main>
 
-<footer>
-  <p>Vice City Platinum Playbook — an unofficial fan guide. Not affiliated with Rockstar Games. No Rockstar logo or artwork is used. Works fully offline; progress is stored only in your browser.</p>
+<footer id="about">
+  <p>Sunset Strip Trophy Guide — an unofficial, fan-made guide. Grand Theft Auto and GTA are trademarks of their owners; this guide uses no Rockstar logo, artwork or game screenshots. Trophy names, descriptions and grades are as PlayStation publishes them. Works fully offline: it loads nothing from the network.</p>
 </footer>
 
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>
