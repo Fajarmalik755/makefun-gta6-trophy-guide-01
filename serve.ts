@@ -1,68 +1,67 @@
-// Vice City Platinum Playbook — tiny local server for app/ (Node 22, stdlib).
-//
-// Serves the guide's app/ folder on http://localhost:8080 so it can be tried
-// in a desktop browser. Usage: `node serve.ts` or `node serve.ts --port 9000`.
-// It only ever serves files from inside app/, and only over the local loopback
-// interface — this is a development convenience, not a public web server.
+// Sunset Strip Trophy Guide — tiny static server for app/ (Node 22, standard
+// library only). Run `node serve.ts` and open http://localhost:8080
+// (`--port <n>` for another port). It serves only files under app/, sends the
+// MIME types a browser needs, and does nothing else: a development
+// convenience, not a server for the internet. Run it from this folder so
+// ./app resolves beside serve.ts.
 
 import { createReadStream, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// The folder served, resolved next to this file.
 const appRoot = resolve(fileURLToPath(new URL('./app', import.meta.url)));
-
-// Pick a port: --port <n> wins, anything invalid falls back to 8080.
-// (8080 is the kit's usual local port for this competition's guides.)
 const argv = process.argv.slice(2);
-const flagAt = argv.indexOf('--port');
-const wanted = flagAt === -1 ? 8080 : Number(argv[flagAt + 1]);
+const portFlag = argv.indexOf('--port');
+const wanted = portFlag === -1 ? 8080 : Number(argv[portFlag + 1]);
 const port = Number.isInteger(wanted) && wanted > 0 && wanted < 65536 ? wanted : 8080;
 
-const TYPES = {
+const MIME_TYPES: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.mjs': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.svg': 'image/svg+xml',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
-  '.svg': 'image/svg+xml',
+  '.webp': 'image/webp',
   '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2',
+  '.webmanifest': 'application/manifest+json',
 };
 
-createServer((req, res) => {
-  const target = new URL(req.url ?? '/', 'http://localhost');
-  let path = target.pathname;
+createServer((request, response) => {
+  const url = new URL(request.url ?? '/', 'http://localhost');
+  let pathname: string;
   try {
-    path = decodeURIComponent(path);
+    pathname = decodeURIComponent(url.pathname);
   } catch {
-    res.writeHead(400).end('bad request');
+    response.writeHead(400).end('bad request');
     return;
   }
-  if (path.endsWith('/')) path += 'index.html';
-  const file = resolve(join(appRoot, normalize(path)));
+  if (pathname.endsWith('/')) pathname += 'index.html';
+  const file = resolve(join(appRoot, normalize(pathname)));
   if (file !== appRoot && !file.startsWith(appRoot + sep)) {
-    res.writeHead(403).end('forbidden');
+    response.writeHead(403).end('forbidden');
     return;
   }
-  let size;
+  let size: number;
   try {
-    const info = statSync(file);
-    if (!info.isFile()) throw new Error('not a file');
-    size = info.size;
+    const stats = statSync(file);
+    if (!stats.isFile()) throw new Error('not a file');
+    size = stats.size;
   } catch {
-    res.writeHead(404).end('not found');
+    response.writeHead(404).end('not found');
     return;
   }
-  res.writeHead(200, {
-    'content-type': TYPES[extname(file).toLowerCase()] ?? 'application/octet-stream',
+  response.writeHead(200, {
+    'content-type': MIME_TYPES[extname(file).toLowerCase()] ?? 'application/octet-stream',
     'content-length': size,
-    'cache-control': 'no-store', // always serve fresh files while editing
+    'cache-control': 'no-store',
   });
-  createReadStream(file).pipe(res);
+  createReadStream(file).pipe(response);
 }).listen(port, '127.0.0.1', () => {
-  console.log('Vice City Platinum Playbook is on http://localhost:' + port);
+  console.log(`Sunset Strip Trophy Guide is on http://localhost:${port}`);
 });

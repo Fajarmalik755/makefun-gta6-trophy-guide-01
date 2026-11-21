@@ -1,26 +1,23 @@
-// Vice City Platinum Playbook — entry hand-in program (Node 22, stdlib only).
+// Sunset Strip Trophy Guide — submission program (Node 22, standard library only).
 //
-// What it does, in plain terms: it gathers the guide (the app/ folder next to
-// this file, plus screenshots/ when they exist) and hands them to the make.fun
-// grader by writing them into the output directory and adding dossier.json,
-// the summary the grader's own library builds from those files.
+// The entry is the static web app in app/ (index.html, its scripts, styles and
+// data/trophies.json) plus 3 or 4 screenshots in screenshots/. This program
+// hands it in: it copies both folders into the output directory and writes
+// dossier.json there with the vendored make.fun library, exactly as the
+// scorer rebuilds it. vendor/makefun-frontend.ts must stay byte-identical
+// to the kit's copy, or the dossier will not match.
 //
-// Run it locally like this:
+// Outside the grader, MAKEFUN_OUTPUT_DIR stands in for /output:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
-// Outside the grader, MAKEFUN_OUTPUT_DIR stands in for /output; inside the
-// grader /output is used. Two runs must write byte-identical output.
+// Serve the app locally with `node serve.ts` (http://localhost:8080).
 
 import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-frontend.ts';
 
-// Folder this file lives in, and the folder we hand the entry into.
 const repoRoot = fileURLToPath(new URL('.', import.meta.url));
 const outputDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
-
-// The two folders the entry is made of. app/ is required; screenshots/ is
-// copied only when the maker has added renders of the guide.
 const appSource = join(repoRoot, 'app');
 const shotsSource = join(repoRoot, 'screenshots');
 
@@ -31,15 +28,14 @@ if (existsSync(shotsSource)) {
   cpSync(shotsSource, join(outputDir, 'screenshots'), { recursive: true });
 }
 
-// Dossier limits mirror the competition gate: the text budget, at most four
-// screenshots of 256 KiB, and the app/ file and byte caps. These numbers come
-// from the kit's gate reference, not from this entry's own files.
-const dossierOptions = {
+// Caps mirror the gate: at most 4 screenshots of 256 KiB, app/ at most
+// 993 files and directories and 48 MiB, dossier text at most 160 KiB.
+// buildDossier throws when a cap is breached, so a bad build fails loudly
+// here instead of shipping a dossier the scorer would refuse.
+const dossier = buildDossier(outputDir, {
   text_max_bytes: 163840,
   screenshots: { max: 4, max_bytes: 262144 },
   app_max_files: 993,
   app_max_bytes: 50331648,
-};
-const dossierText = buildDossier(outputDir, dossierOptions);
-writeFileSync(join(outputDir, 'dossier.json'), dossierText);
-console.log('Handed in: app/ + screenshots/ + dossier.json in ' + outputDir);
+});
+writeFileSync(join(outputDir, 'dossier.json'), dossier);
