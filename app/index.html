@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leonida Trophy Codex — GTA VI PS5 Trophy Guide &amp; Tracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="mark">LT</div>
+  <div>
+    <h1>Leonida Trophy Codex</h1>
+    <p class="subtitle">GTA VI &middot; PS5 &middot; 55 trophies &middot; every step cited</p>
+  </div>
+  <div class="progress">
+    <div><strong id="progressText">0 / 55 earned</strong></div>
+    <div class="grade-counts" id="gradeCounts">P 0/1&nbsp;&nbsp;G 0/2&nbsp;&nbsp;S 0/6&nbsp;&nbsp;B 0/46</div>
+    <div class="progress-bar"><span id="progressBar" style="width:0%"></span></div>
+  </div>
+  <div class="top-actions">
+    <label><input type="checkbox" id="spoilerToggle"> Spoiler shield</label>
+    <button id="exportBtn" type="button">Export</button>
+    <button id="importBtn" type="button">Import</button>
+    <input type="file" id="importFile" accept="application/json,.json" hidden>
+    <span class="saved-note">Saved in this browser</span>
+  </div>
+</header>
+
+<div class="audit" id="auditStrip" aria-label="Audit strip"></div>
+
+<nav class="tabs" aria-label="Sections">
+  <button type="button" data-tab="tracker" class="active">Tracker</button>
+  <button type="button" data-tab="roadmap">Roadmap</button>
+  <button type="button" data-tab="missables">Missables</button>
+  <button type="button" data-tab="sources">Sources</button>
+</nav>
+
+<main>
+  <section class="tabpane active" id="tab-tracker">
+    <div class="filters" id="filters"></div>
+    <div class="tracker-grid">
+      <div class="trophy-list" id="trophyList" role="list"></div>
+      <div class="detail" id="detailPanel"></div>
+      <aside class="rail" id="railPanel"></aside>
+    </div>
+  </section>
+  <section class="tabpane" id="tab-roadmap">
+    <h2>Roadmap to the Platinum</h2>
+    <p>Play the five story chapters in order, clear the side strands as they open, then clean up in free-roam after the credits. The platinum, <strong>Vice Got a Price!</strong>, pops when the last of the other 54 trophies is yours.</p>
+    <div id="roadmapPanel"></div>
+  </section>
+  <section class="tabpane" id="tab-missables">
+    <h2>Missable Trophies — Last-Chance Windows</h2>
+    <p>Only one trophy in the set can be missed outright. The disputes below show where the guides disagreed about missability, with both versions kept. When in doubt, do the Chapter 1 job early — you cannot go back without an old save.</p>
+    <div id="missablesPanel"></div>
+  </section>
+  <section class="tabpane" id="tab-sources">
+    <h2>Sources</h2>
+    <p>Every guide in this codex cites its sources. The list below gathers every distinct source used, with how many trophies cite it. Sources were read on 21 Nov 2026.</p>
+    <ol class="sources-list" id="sourcesPanel"></ol>
+  </section>
+</main>
+
+<footer>
+  Leonida Trophy Codex — an unofficial fan-made tracker for Grand Theft Auto VI on PS5. Not affiliated with Rockstar Games. Trophy names and descriptions are shown as PlayStation publishes them; every guide is written in our own words and cites its sources.
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
